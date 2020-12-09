@@ -3,29 +3,40 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List transcations;
-  TransactionList(this.transcations);
+  final Function deleteItems;
+  TransactionList(this.transcations, this.deleteItems);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 600,
       child: transcations.isEmpty
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text('No Transations Yet',
-                    style: Theme.of(context).textTheme.headline6),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 100,
-                  child: Image(
-                    image: AssetImage('assets/images/waiting.png'),
-                    fit: BoxFit.cover,
+          ? Container(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'No Transations Yet',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    height: 200,
+                    child: Image(
+                      image: AssetImage('assets/images/waiting.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                ],
+              ),
             )
           : ListView.builder(
               itemBuilder: (ctx, index) {
@@ -38,20 +49,34 @@ class TransactionList extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(6),
                         child: FittedBox(
-                          child: Text(
-                            '\$${transcations[index].price}',
-                            style: Theme.of(context).textTheme.headline6,
+                          child: Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Text(
+                              '\$${transcations[index].price}',
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
                           ),
                         ),
                       ),
                     ),
                     title: Text(
                       transcations[index].title,
-                      style: Theme.of(context).textTheme.headline6,
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
                     ),
                     subtitle: Text(
                       DateFormat.yMMMd().format(
                         transcations[index].date,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                      onPressed: () => deleteItems(
+                        transcations[index].id,
                       ),
                     ),
                   ),

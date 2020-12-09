@@ -19,9 +19,11 @@ class MyApp extends StatelessWidget {
         fontFamily: 'QuickSand',
         textTheme: ThemeData.light().textTheme.copyWith(
               title: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -59,11 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
     )
   ];
 
-  void _addtranscation(String title, double price) {
+  void _addtranscation(String title, double price, DateTime cuDate) {
     final newTx = Transcations(
       title: title,
       price: price,
-      date: DateTime.now(),
+      date: cuDate,
       id: DateTime.now().toString(),
     );
     setState(() {
@@ -89,6 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
+  void deleteItem(id) {
+    setState(() {
+      _transcations.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Chart(_recentTransations),
-            TransactionList(_transcations),
+            TransactionList(_transcations, deleteItem),
           ],
         ),
       ),

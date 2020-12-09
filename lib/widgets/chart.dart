@@ -21,7 +21,10 @@ class Chart extends StatelessWidget {
       }
       print(DateFormat.E().format(weekDay));
       print(totalSum);
-      return {'day': DateFormat.E().format(weekDay), 'amount': totalSum};
+      return {
+        'day': DateFormat.E().format(weekDay).substring(0),
+        'amount': totalSum
+      };
     }).reversed.toList();
   }
 
@@ -40,17 +43,20 @@ class Chart extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: groupedTransactionValues.map((data) {
-              return Flexible(
-                fit: FlexFit.tight,
-                child: ChartBars(
+            children: groupedTransactionValues.map(
+              (data) {
+                return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBars(
                     data['day'],
                     data['amount'],
                     totalMax == 0.0
                         ? 0.0
-                        : (data['amount'] as double) / totalMax),
-              );
-            }).toList(),
+                        : (data['amount'] as double) / totalMax,
+                  ),
+                );
+              },
+            ).toList(),
           ),
         ));
   }
